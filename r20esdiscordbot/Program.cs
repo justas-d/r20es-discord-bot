@@ -77,7 +77,7 @@ namespace r20esdiscordbot
 ISSUE: <What is the issue? Explain as detailed as you can, this is also the perfect place for screenshots of the issue if applicable>
 STEPS: <What did I do, or didn't do to get to this issue?>
 NOTES: <Any extra information you think could be useful?>
-BROWSER: <What browser do you use? What version of the extension do you use? What other extensions do you use (screenshots preferred)?>
+BROWSER: <What browser (w/ version) do you use? What version of the extension do you use? What other extensions do you use (screenshots preferred)?>
 ```
 ";
                     await SendMessageToIssueChannelAndPingPeople(template, client, message.MentionedUsers);
