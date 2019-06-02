@@ -125,7 +125,7 @@ namespace r20esdiscordbot
                         }
                         catch (Exception e)
                         {
-                            await message.Channel.SendMessageAsync("There's been a problem. Please contact stormy#0427 to get access to the server.");
+                            await message.Channel.SendMessageAsync($"There's been a problem: {e.Message} Please contact stormy#0427 to get access to the server.");
                         }
                     }
                     else
