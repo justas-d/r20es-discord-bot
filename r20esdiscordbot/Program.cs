@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Net.NetworkInformation;
+using System.Reflection.PortableExecutable;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -96,25 +97,35 @@ namespace r20esdiscordbot
                 {
                     if (message.Content.ToLowerInvariant() == "y")
                     {
-                        var server = client.GetGuild(config.Server);
-                        var userInServer = server.GetUser(message.Author.Id);
-                        var role = server.GetRole(config.IJustJoinedTheServerRole);
-                        if (userInServer == null)
+                        try
                         {
-                            await message.Channel.SendMessageAsync("userInServer: server is null. Please contact stormy#0427 to get access to the server.");
+                            var server = client.GetGuild(config.Server);
+                            var userInServer = server.GetUser(message.Author.Id);
+                            var role = server.GetRole(config.IJustJoinedTheServerRole);
+                            if (userInServer == null)
+                            {
+                                await message.Channel.SendMessageAsync(
+                                    "userInServer: server is null. Please contact stormy#0427 to get access to the server.");
+                            }
+                            else if (role == null)
+                            {
+                                await message.Channel.SendMessageAsync(
+                                    "role: server is null. Please contact stormy#0427 to get access to the server.");
+                            }
+                            else if (server == null)
+                            {
+                                await message.Channel.SendMessageAsync(
+                                    "bug: server is null. Please contact stormy#0427 to get access to the server.");
+                            }
+                            else
+                            {
+                                await userInServer.RemoveRoleAsync(role);
+                                await message.Channel.SendMessageAsync("You can now access the rest of the server!");
+                            }
                         }
-                        else if (role == null)
+                        catch (Exception e)
                         {
-                            await message.Channel.SendMessageAsync("role: server is null. Please contact stormy#0427 to get access to the server.");
-                        }
-                        else if (server == null)
-                        {
-                            await message.Channel.SendMessageAsync("bug: server is null. Please contact stormy#0427 to get access to the server.");
-                        }
-                        else
-                        {
-                            await userInServer.RemoveRoleAsync(role);
-                            await message.Channel.SendMessageAsync("You can now access the rest of the server!");
+                            await message.Channel.SendMessageAsync("There's been a problem. Please contact stormy#0427 to get access to the server.");
                         }
                     }
                     else
