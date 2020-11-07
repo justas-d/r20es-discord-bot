@@ -170,13 +170,13 @@ BROWSER: <What browser (w/ version) do you use? What version of the extension do
 **Chrome**
     :one: Navigate to `chrome://extensions` in the URL bar.
     :two: Turn on developer mode in the top right.
-    :three: Click `background page` in the R20ES square.
+    :three: Click `background page` in the VTTES square.
     :four: In the top bar of the new window, press console.
 
 **Firefox**
     :one: Navigate to `about:debugging` in the URL bar.
     :two: Turn on Debugging (`Enable add-on debugging`)
-    :three: Click `Debug` in the R20ES square.
+    :three: Click `Debug` in the VTTES square.
     :four: Accept the debugging connection (nobody's taking over your browser, no worries.)
     :five: In the top bar of the new window, press console.
 ";
