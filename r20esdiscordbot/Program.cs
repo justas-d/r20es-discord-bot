@@ -52,6 +52,8 @@ namespace r20esdiscordbot {
         await message.AddRoleAsync(role);
       };
 
+      var contact_info = "Please contact Justas#0427 to get access to the server.";
+
       client.MessageReceived += async (inMessage) => {
         if (inMessage.Author.Id == client.CurrentUser.Id) return;
         if (inMessage.Author.IsBot) return;
@@ -66,7 +68,6 @@ namespace r20esdiscordbot {
               var server = client.GetGuild(config.Server);
               var userInServer = server.GetUser(message.Author.Id);
               var role = server.GetRole(config.IJustJoinedTheServerRole);
-              var contact_info = "Please contact Justas#0427 to get access to the server.";
               if (userInServer == null) {
                 await message.Channel.SendMessageAsync(
                   $"bug: userInServer is null. {contact_info}"
