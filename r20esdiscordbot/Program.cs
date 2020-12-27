@@ -85,7 +85,7 @@ namespace r20esdiscordbot {
               }
               else {
                 await userInServer.RemoveRoleAsync(role);
-                await message.Channel.SendMessageAsync("You can now access the rest of the server!");
+                await message.Channel.SendMessageAsync("You can now access the issue discussion channel!");
               }
             }
             catch (Exception e) {
