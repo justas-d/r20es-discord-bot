@@ -14,4 +14,5 @@ FROM microsoft/dotnet:aspnetcore-runtime
 WORKDIR /app
 COPY --from=build-env /app/out .
 COPY config.json ./
+
 ENTRYPOINT ["dotnet", "r20esdiscordbot.dll"]
