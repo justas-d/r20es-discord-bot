@@ -13,23 +13,44 @@ using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 
 namespace r20esdiscordbot {
-  class BotConfig {
+  public class BotConfig {
     public string Token { get; set; }
     public ulong Server { get; set; }
     public ulong IJustJoinedTheServerRole { get; set; }
     public ulong IssueChannel { get; set; }
+    public ulong JustasAccountId { get; set; }
   }
 
-  class Program {
-    private static BotConfig config;
+  public class Program {
+    public static BotConfig config;
+    public static DiscordSocketClient client;
 
     public static void Main(string[] args)
       => new Program().MainAsync().GetAwaiter().GetResult();
 
+    public async Task report_error(
+      string message,
+      IMessageChannel channel
+    ) {
+      try {
+        await channel.SendMessageAsync(
+          $"Something went wrong.\nPlease contact Justas#0427 to get access to the server.\nDetail: {message}\n";
+        );
+          
+        var my_acc = client.GetUser(config.JustasAccountId);
+        var my_dm = await my_acc.GetOrCreateDMChannelAsync();
+
+        await my_dm.SendMessageAsync($"report_error: Message: {message}. Channel: {channel}\n");
+      }
+      catch(Exception ex) {
+        // NOTE(justasd): ignored
+      }
+    }
+
     public async Task MainAsync() {
       config = JsonConvert.DeserializeObject<BotConfig>(File.ReadAllText("config.json"));
 
-      var client = new DiscordSocketClient();
+      client = new DiscordSocketClient();
 
       client.Log += (message) => {
         Console.WriteLine($"[{message.Severity}] {message.Message} ({message.Source})");
@@ -52,8 +73,6 @@ namespace r20esdiscordbot {
         await message.AddRoleAsync(role);
       };
 
-      var contact_info = "Please contact Justas#0427 to get access to the server.";
-
       client.MessageReceived += async (inMessage) => {
         if (inMessage.Author.Id == client.CurrentUser.Id) return;
         if (inMessage.Author.IsBot) return;
@@ -69,19 +88,13 @@ namespace r20esdiscordbot {
               var userInServer = server.GetUser(message.Author.Id);
               var role = server.GetRole(config.IJustJoinedTheServerRole);
               if (userInServer == null) {
-                await message.Channel.SendMessageAsync(
-                  $"bug: userInServer is null. {contact_info}"
-                );
+                await report_error("bug: userInServer is null", message.Channel);
               }
               else if (role == null) {
-                await message.Channel.SendMessageAsync(
-                  $"bug: role is null. {contact_info}"
-                );
+                await report_error("bug: role is null", message.Channel);
               }
               else if (server == null) {
-                await message.Channel.SendMessageAsync(
-                  $"bug: server is null. {contact_info}"
-                );
+                await report_error("bug: server is null", message.Channel);
               }
               else {
                 await userInServer.RemoveRoleAsync(role);
@@ -89,7 +102,7 @@ namespace r20esdiscordbot {
               }
             }
             catch (Exception e) {
-              await message.Channel.SendMessageAsync($"There's been a problem: '{e.Message}'. {contact_info}");
+              await report_error(e.Message, message.Channel);
             }
           }
           else {
