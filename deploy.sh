@@ -7,6 +7,6 @@ git pull origin master
 
 docker stop $instance
 docker rm $instance
-docker build -t $container $container
+docker build -t $container .
 
 docker run -dit --restart unless-stopped --name $instance $container
