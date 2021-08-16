@@ -12,7 +12,7 @@ using Discord.WebSocket;
 using Microsoft.CSharp.RuntimeBinder;
 using Newtonsoft.Json;
 
-namespace r20esdiscordbot {
+namespace r20esdiscordbot2 {
   public class BotConfig {
     public string Token { get; set; }
     public ulong Server { get; set; }
@@ -33,9 +33,7 @@ namespace r20esdiscordbot {
       IMessageChannel channel
     ) {
       try {
-        await channel.SendMessageAsync(
-          $"Something went wrong.\nPlease contact Justas#0427 to get access to the server.\nDetail: {message}\n";
-        );
+        await channel.SendMessageAsync($"Something went wrong.\nPlease contact Justas#0427 to get access to the server.\nDetail: {message}\n");
           
         var my_acc = client.GetUser(config.JustasAccountId);
         var my_dm = await my_acc.GetOrCreateDMChannelAsync();
