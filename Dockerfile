@@ -1,18 +1,8 @@
-FROM microsoft/dotnet:sdk AS build-env
+FROM mcr.microsoft.com/dotnet/aspnet:5.0
+
 WORKDIR /app
 
-# Copy csproj and restore as distinct layers
-COPY *.csproj ./
-RUN dotnet restore
-
-# Copy everything else and build
-COPY . ./
-RUN dotnet publish -c Release -o out
-
-# Build runtime image
-FROM microsoft/dotnet:aspnetcore-runtime
-WORKDIR /app
-COPY --from=build-env /app/out .
+COPY out/* ./
 COPY config.json ./
 
-ENTRYPOINT ["dotnet", "r20esdiscordbot.dll"]
+ENTRYPOINT ["dotnet", "r20esdiscordbot2.dll"]
